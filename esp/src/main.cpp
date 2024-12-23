@@ -16,8 +16,6 @@
 
 #define BLYNK_PRINT Serial
 #define LED_PIN 21
-#define BTN_AUTO_MODE 22
-#define BTN_LED 23
 
 const int DHT_PIN = 19;
 
@@ -103,29 +101,7 @@ void handleAutoMode()
   }
 }
 
-void handleButton()
-{
-  if (digitalRead(BTN_LED) == LOW)
-  {
-    digitalWrite(LED_PIN, !digitalRead(LED_PIN));
-    while (
-        digitalRead(BTN_LED) == LOW)
-    {
-      delay(100);
-    }
-  }
 
-  if (digitalRead(BTN_AUTO_MODE) == LOW)
-  {
-    autoMode = !autoMode;
-    Blynk.virtualWrite(V0, autoMode);
-    while (
-        digitalRead(BTN_AUTO_MODE) == LOW)
-    {
-      delay(100);
-    }
-  }
-}
 
 void setup()
 {
@@ -135,8 +111,7 @@ void setup()
   Blynk.begin(BLYNK_AUTH_TOKEN, ssid, pass);
   socket.begin(host, port);
   pinMode(LED_PIN, OUTPUT);
-  pinMode(BTN_AUTO_MODE, INPUT_PULLUP);
-  pinMode(BTN_LED, INPUT_PULLUP);
+
 }
 
 void loop()
@@ -145,7 +120,6 @@ void loop()
   socket.loop();
   handleData();
   handleAutoMode();
-  handleButton();
 }
 
 BLYNK_WRITE(V0)
